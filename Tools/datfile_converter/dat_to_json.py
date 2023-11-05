@@ -4,8 +4,10 @@ Python version of SIMCAT
 
 from datfile import DatFile, config  # Main dict to contain data and config file
 
+file_path = "EXAMPLE.dat"
 
-def process_dat_file_lines(file_path="EXAMPLE.dat", config, line, dat_file):
+
+def process_dat_file_lines(file_path, config, dat_file):
     """
     Process all the sections:
     [0] Metadata at the top of the file
@@ -24,18 +26,49 @@ def process_dat_file_lines(file_path="EXAMPLE.dat", config, line, dat_file):
     # Open DAT file for reading
     try:
         with open(file_path, 'r') as file:
-            # Read the file line by line
-            line = next(file) # Skip first line
-            for line in file:
-                # Process each line and add data to json
-                # Use a different function for each section
-                # Metadata section
-                config.File.end:
-                process_metadata(line, dat_file)
+            lines = file.readlines()
 
-                # Determinands section
+        # Process metadata section at the top
+        # TODO process_metadata
 
+        # Initialize variables to track section boundaries
+        section_start = None
+        section_end = None
 
+        # Iterate through the lines
+        for line in lines:
+            # Determinands
+            if config["Determinands"]["start"] in line:
+                section_start = "start_determinands"
+                section_lines = []
+            elif config["Determinands"]["end"] in line:
+                section_end = "end_determinands"
+                if section_start and section_end:
+                    process_determinand_section(
+                            section_lines, dat_file)
+                    section_start = section_end = None
+            # Reaches
+            elif config["Reaches"]["start"] in line:
+                section_start = "start_reaches"
+                section_lines = []
+            elif config["Reaches"]["end"] in line:
+                section_end = "end_reaches"
+                if section_start and section_end:
+                    process_reaches_section(
+                            section_lines, dat_file)
+                    section_start = section_end = None
+            # Anything else
+            elif section_start:
+                section_lines.append(line)
+
+        # Ensure that any remaining lines are processed
+        if section_start:
+            if section_start == "start_determinands":
+                process_determinand_section(
+                        section_lines, dat_file)
+            elif section_start == "start_reaches":
+                process_reaches_section(
+                        section_lines, dat_file)
 
 
     except FileNotFoundError:
@@ -45,98 +78,63 @@ def process_dat_file_lines(file_path="EXAMPLE.dat", config, line, dat_file):
         print(f"An error occurred: {str(e)}")
 
 
-
-# Parse dat file metadata
-def process_metadata(line, dat_file):
+def process_metadata(lines, dat_file):
     """
+    Parse dat file metadata at the top of the file
     """
-    pass
-
-
-# Parse determinand data (to populate decay and feature quality sections)
-def process_determinand_section(line, dat_file):
-    """
-    """
-    pass
-
-
-# Parse reaches
-def process_reaches_section(line, dat_file):
-    """
-    """
-    pass
-
-
-# Parse river flow and quality and eff flow and quality using dataset code as key
-def process_river_flow_section(line, dat_file):
-    """
-    """
-    pass
-
-
-def process_river_quality_section(line, dat_file):
-    """
-    """
-    pass
-
-
-def process_effluent_section(line, dat_file):
-    """
-    """
-    pass
-
-
-# Parse features and assing flow and quality data
-def process_features_section(line, dat_file):
-    """
-    """
-    pass
-
-
-# ChatGPT Solution
-# Define functions to process different sections
-def process_section1(lines):
-    # Implement logic for processing section 1
     for line in lines:
-        print(f"Processing section 1: {line}")
+        print(f"Processing metadata section: {line}")
 
-def process_section2(lines):
-    # Implement logic for processing section 2
+
+def process_determinand_section(lines, dat_file):
+    """
+    Parse determinand data (to populate decay and feature
+    quality sections later)
+    """
     for line in lines:
-        print(f"Processing section 2: {line}")
+        print(f"Processing determinand section: {line}")
 
-# Open and read the text file
-with open("your_text_file.txt", "r") as file:
-    lines = file.readlines()
 
-# Initialize variables to track section boundaries
-section_start = None
-section_end = None
+def process_reaches_section(lines, dat_file):
+    """
+    Parse reaches
+    """
+    for line in lines:
+        print(f"Processing reaches section: {line}")
 
-# Iterate through the lines
-for line in lines:
-    if "START_SECTION1" in line:
-        section_start = "START_SECTION1"
-        section_lines = []
-    elif "END_SECTION1" in line:
-        section_end = "END_SECTION1"
-        if section_start and section_end:
-            process_section1(section_lines)
-            section_start = section_end = None
-    elif "START_SECTION2" in line:
-        section_start = "START_SECTION2"
-        section_lines = []
-    elif "END_SECTION2" in line:
-        section_end = "END_SECTION2"
-        if section_start and section_end:
-            process_section2(section_lines)
-            section_start = section_end = None
-    elif section_start:
-        section_lines.append(line)
 
-# Ensure that any remaining lines are processed
-if section_start:
-    if section_start == "START_SECTION1":
-        process_section1(section_lines)
-    elif section_start == "START_SECTION2":
-        process_section2(section_lines)
+def process_river_flow_section(lines, dat_file):
+    """
+    Parse river flow using dataset code as key
+    """
+    for line in lines:
+        print(f"Processing river flow section: {line}")
+
+
+def process_river_quality_section(lines, dat_file):
+    """
+    Parse river quality using dataset code as key
+    """
+    for line in lines:
+        print(f"Processing river quality section: {line}")
+
+
+def process_effluent_section(lines, dat_file):
+    """
+    Parse effluent flow and quality using dataset code as key
+    """
+    for line in lines:
+        print(f"Processing effluent section: {line}")
+
+
+def process_features_section(lines, dat_file):
+    """
+    Parse features and assing flow and quality data
+    """
+    for line in lines:
+        print(f"Processing features section: {line}")
+
+
+# Process dat file
+process_dat_file_lines(file_path, config, DatFile)
+
