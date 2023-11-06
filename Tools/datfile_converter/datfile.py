@@ -30,6 +30,8 @@ DatFile = {
 
 # Reach = {
 #         "metadata": {},
+#         "flow_params": {},
+#         "wq_params" {},
 #         "features": {
 #             # "feature_id": Feature
 #             }
