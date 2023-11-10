@@ -5,6 +5,7 @@ Python version of SIMCAT
 # TODO Many of the values should be numerical but are being appended as text
 # TODO Need to strip quotes from string values
 # TODO Need determinands section in metadata
+# TODO Add functionality to handle gis coordinates properly
 
 import re
 import json
