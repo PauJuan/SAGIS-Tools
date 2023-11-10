@@ -158,6 +158,8 @@ def process_reaches_section(lines, dat_file):
         elif count == 1:
             decay_rates = re.split(r"\s{2,}", line)
             reach["decay_rates"] = decay_rates
+            # Add features at the end
+            reach["features"] = {}
             count = 0
         elif count == 0:
             # Retrieve data
@@ -186,9 +188,13 @@ def process_river_flow_section(lines, dat_file):
     """
     flow_data = {}
     for line in lines:
-        # print(f"Processing river flow section: {line}")
         pass
         # TODO use code as key and retrieve data in simple manner
+        code, XXX = re.split(r"\s{2,}", line)
+        flow_data[code] = {
+            "dist": dist,
+            ""
+                }
 
     # Return dictionary to use data later
     return flow_data
