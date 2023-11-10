@@ -2,8 +2,13 @@
 Python version of SIMCAT
 """
 
+# TODO Many of the values should be numerical but are being appended as text
+# TODO Need to strip quotes from string values
+# TODO Need determinands section in metadata
+
 import re
 import json
+import yaml
 from datfile import DatFile, config  # Main dict to contain data and config file
 
 file_path = "EXAMPLE.dat"
@@ -81,7 +86,7 @@ def process_dat_file_lines(file_path, config, dat_file):
                 section_end = "end_river_quality"
                 if section_start and section_end:
                     wq_data = process_river_quality_section(
-                            section_lines, dat_file)
+                            section_lines, dat_file, det_units_dict)
                     section_start = section_end = None
 
             # Effluent
@@ -108,7 +113,7 @@ def process_dat_file_lines(file_path, config, dat_file):
 
             # Anything else add lines to be processed
             elif section_start:
-                section_lines.append(line)
+                section_lines.append(line.strip())
 
     except FileNotFoundError:
         print(f"The file '{file_path}' was not found.")
@@ -133,9 +138,15 @@ def process_determinand_section(lines, dat_file):
     quality sections later)
     """
     det_units_dict = {}
+    count = 1
     for line in lines:
         name, short_name, units = re.findall(r"'(.*?)'", line)
-        det_units_dict[short_name] = units
+        det_units_dict[str(count)] = {
+                "name": name,
+                "short_name": short_name,
+                "units": units
+                }
+        count += 1
 
     # Return dictionary to use data later
     return det_units_dict
@@ -150,8 +161,6 @@ def process_reaches_section(lines, dat_file):
     # Use count to separate reach data from decay, standards, etc
     count = 0
     for line in lines:
-        # Clean spaces
-        line = line.strip()
         # TODO Need to implement logic to read in Standards
         if line.startswith("'Standard'"):
             continue
@@ -188,29 +197,75 @@ def process_river_flow_section(lines, dat_file):
     """
     flow_data = {}
     for line in lines:
-        pass
-        # TODO use code as key and retrieve data in simple manner
-        code, XXX = re.split(r"\s{2,}", line)
-        flow_data[code] = {
-            "dist": dist,
-            ""
-                }
+
+        if ".npd" in line:
+            code, dist, npd_filename, corr, _ = re.split(r"\s{2,}", line)
+            flow_data[code] = {
+                    "dist": dist,
+                    "mean_flow": mean_flow,
+                    "low_95th_flow": low_95th_flow,
+                    "shift_flow": shift_flow,
+                    "corr": corr
+                    }
+        else:
+            code, dist, mean_flow, low_95th_flow, shift_flow, corr, _ = re.split(r"\s{2,}", line)
+            flow_data[code] = {
+                    "dist": dist,
+                    "mean_flow": mean_flow,
+                    "low_95th_flow": low_95th_flow,
+                    "shift_flow": shift_flow,
+                    "corr": corr
+                    }
 
     # Return dictionary to use data later
     return flow_data
 
 
-def process_river_quality_section(lines, dat_file):
+def process_river_quality_section(lines, dat_file, det_units_dict):
     """
     Parse river quality using dataset code as key
     [5] River Quality - per determinand, dist type and params, linked to feature
     """
     wq_data = {}
     for line in lines:
-        # print(f"Processing river quality section: {line}")
-        pass
-        # TODO use code as key, det dict (need to add to func arguments) to
-        # count determinands, and retrieve data in simple manner
+
+        parts = re.split(r"\s{2,}", line)
+        code, det_code = parts[0], parts[1]
+        det_name = det_units_dict[det_code]["short_name"]
+
+        # Initialise for first determinand
+        if det_code == '1':
+            wq_data[code] = {}
+
+        if len(parts) > 9:
+            # Power function
+            code, det_code, dist, mean_conc, std, power_idx, base_conc, \
+            cut_off_pc, corr, sample_n, _ = parts
+
+            wq_data_det = wq_data[code]
+            wq_data_det[det_name] = {
+                    "dist": dist,
+                    "mean_conc": mean_conc,
+                    "std": std,
+                    "power_idx": power_idx,
+                    "base_conc": base_conc,
+                    "cut_off_pc": cut_off_pc,
+                    "corr": corr,
+                    "sample_n": sample_n
+                    }
+
+        else:
+            code, det_code, dist, mean_conc, std, shift_conc, corr, sample_n, _ = parts
+
+            wq_data_det = wq_data[code]
+            wq_data_det[det_name] = {
+                    "dist": dist,
+                    "mean_conc": mean_conc,
+                    "std": std,
+                    "shift_conc": shift_conc,
+                    "corr": corr,
+                    "sample_n": sample_n
+                    }
 
     # Return dictionary to use data later
     return wq_data
@@ -224,7 +279,6 @@ def process_effluent_section(lines, dat_file):
     """
     eff_data = {}
     for line in lines:
-        # print(f"Processing effluent section: {line}")
         pass
         # TODO use code as key, det dict (need to add to func arguments) to
         # count determinands (on top of flow), and retrieve data in simple manner
@@ -239,20 +293,49 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
     [9] Features - id, name, feat type, distance (km), coordinates (BNG)
     """
     for line in lines:
-        # print(f"Processing features section: {line}")
-        pass
-        # TODO Use Reach number to retrieve reach, replace flow and wq codes by
-        # data, add new feature, populate with data (using effluent data when
-        # necessary)
+        if "WBID:" in line:
+            pass
+            # TODO Populate reach flow and wq data
 
+        else:
+            parts = re.split(r"\s{2,}", line)
+            # Handle names with spaces
+            if len(parts) > 10:
+                parts = [parts[0] + " " + parts[1]] + parts[2:]
 
-    # TODO Loop through reaches and features and substitute flow and wq codes by
-    # values
+            name, code, simno, dist_head, flow_code, wq_code, _, _, _, giscode = parts
+            reach = dat_file["reaches"][simno]
 
+            # Retrieve feature flow and quality data
+            # TODO Need to add logic to handle effluent data
+            try:
+                feature_flow_data = flow_data[flow_code]
+            except KeyError:
+                feature_flow_data = None
+
+            try:
+                feature_wq_data = wq_data[wq_code]
+            except KeyError:
+                feature_wq_data = None
+
+            reach["features"][name] = {
+                    "feat_code": code,
+                    "dist_head": dist_head,
+                    "flow_data": feature_flow_data,
+                    "wq_data": feature_wq_data,
+                    "giscode": giscode,
+                    }
 
 # Process dat file
 process_dat_file_lines(file_path, config, DatFile)
 
-# Export as json
-with open("EXAMPLE.json", "w") as outfile:
+# Export as json and yaml
+jsonfile = "EXAMPLE.json"
+yamlfile = "EXAMPLE.yaml"
+
+with open(jsonfile, "w") as outfile:
     json.dump(DatFile, outfile, indent=4, sort_keys=False)
+# with open(jsonfile) as outfile:
+#     d = json.load(outfile)
+with open(yamlfile, "w") as outfile:
+    yaml.dump(DatFile, outfile, allow_unicode=True)
