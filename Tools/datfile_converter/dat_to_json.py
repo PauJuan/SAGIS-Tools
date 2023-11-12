@@ -4,8 +4,9 @@ Python version of SIMCAT
 
 # TODO Many of the values should be numerical but are being appended as text
 # TODO Need to strip quotes from string values
-# TODO Need determinands section in metadata
-# TODO Add functionality to handle gis coordinates properly
+# TODO Add functionality to handle gis coordinates as lat/long
+# TODO Add determinands section in metadata
+# TODO General review of how the values are stored
 
 import re
 import json
@@ -98,7 +99,7 @@ def process_dat_file_lines(file_path, config, dat_file):
                 section_end = "end_effluent"
                 if section_start and section_end:
                     eff_data = process_effluent_section(
-                            section_lines, dat_file)
+                            section_lines, dat_file, det_units_dict)
                     section_start = section_end = None
 
             # Features
@@ -183,10 +184,17 @@ def process_reaches_section(lines, dat_file):
             reach["unique_ref"] = unique_ref.strip()
             reach["wbid"] = wbid.strip("'")
             reach["length"] = length
-            reach["connectivity"] = (conn1, conn2, conn3)
+            reach["connectivity"] = {
+                    "conn1": conn1,
+                    "conn2": conn2,
+                    "conn3": conn3
+                    }
             reach["flow_data"] = flow_code
             reach["wq_data"] = wq_code
-            reach["velocity"] = (alpha, beta)
+            reach["velocity"] = {
+                    "alpha": alpha,
+                    "beta": beta
+                    }
             # Increase count
             count += 1
 
@@ -203,9 +211,7 @@ def process_river_flow_section(lines, dat_file):
             code, dist, npd_filename, corr, _ = re.split(r"\s{2,}", line)
             flow_data[code] = {
                     "dist": dist,
-                    "mean_flow": mean_flow,
-                    "low_95th_flow": low_95th_flow,
-                    "shift_flow": shift_flow,
+                    "npd_filename": npd_filename,
                     "corr": corr
                     }
         else:
@@ -272,7 +278,7 @@ def process_river_quality_section(lines, dat_file, det_units_dict):
     return wq_data
 
 
-def process_effluent_section(lines, dat_file):
+def process_effluent_section(lines, dat_file, det_units_dict):
     """
     Parse effluent flow and quality using dataset code as key
     [6] Effluent Flow and Quality - flow and per det, dist type and params,
@@ -280,9 +286,43 @@ def process_effluent_section(lines, dat_file):
     """
     eff_data = {}
     for line in lines:
-        pass
-        # TODO use code as key, det dict (need to add to func arguments) to
-        # count determinands (on top of flow), and retrieve data in simple manner
+
+        parts = re.split(r"\s{2,}", line)
+        code, det_code = parts[0], parts[1]
+        if det_code == '0':
+            det_name = "Flow"
+        else:
+            det_name = det_units_dict[det_code]["short_name"]
+
+        # Initialise for first line (flow)
+        if det_code == '0':
+            eff_data[code] = {}
+
+        # Check for NPD files
+        if ".npd" in line:
+            code, dist, npd_filename, shift, corr, sample_n, *_ = re.split(r"\s{2,}", line)
+
+            eff_data_det = eff_data[code]
+            eff_data_det[det_name] = {
+                    "dist": dist,
+                    "npd_filename": npd_filename,
+                    "shift": shift_conc,
+                    "corr": corr,
+                    "sample_n": sample_n
+                    }
+
+        else:
+            code, det_code, dist, mean_conc, std, shift_conc, corr, sample_n, _ = parts
+
+            eff_data_det = eff_data[code]
+            eff_data_det[det_name] = {
+                    "dist": dist,
+                    "mean_conc": mean_conc,
+                    "std": std,
+                    "shift_conc": shift_conc,
+                    "corr": corr,
+                    "sample_n": sample_n
+                    }
 
     # Return dictionary to use data later
     return eff_data
@@ -307,8 +347,9 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
             name, code, simno, dist_head, flow_code, wq_code, _, _, _, giscode = parts
             reach = dat_file["reaches"][simno]
 
+            # TODO Need to add logic to handle data based on feature type
+
             # Retrieve feature flow and quality data
-            # TODO Need to add logic to handle effluent data
             try:
                 feature_flow_data = flow_data[flow_code]
             except KeyError:
@@ -318,6 +359,11 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
                 feature_wq_data = wq_data[wq_code]
             except KeyError:
                 feature_wq_data = None
+
+            try:
+                effluent_data = eff_data[wq_code]
+            except KeyError:
+                effluent_data = None
 
             reach["features"][name] = {
                     "feat_code": code,

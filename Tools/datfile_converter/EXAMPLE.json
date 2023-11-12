@@ -16,17 +16,17 @@
             "unique_ref": "130192",
             "wbid": "GB109053022290",
             "length": "23.799",
-            "connectivity": [
-                "0",
-                "2",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "0",
+                "conn2": "2",
+                "conn3": "0"
+            },
             "flow_data": "1",
             "wq_data": "1",
-            "velocity": [
-                "9.473",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "9.473",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "1.9580",
@@ -301,9 +301,7 @@
                     "dist_head": "0.000",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -623,9 +621,7 @@
                     "dist_head": "23.799",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -2472,17 +2468,17 @@
             "unique_ref": "130188",
             "wbid": "GB109053022260",
             "length": "4.670",
-            "connectivity": [
-                "0",
-                "3",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "0",
+                "conn2": "3",
+                "conn3": "0"
+            },
             "flow_data": "2",
             "wq_data": "2",
-            "velocity": [
-                "7.205",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "7.205",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "1.8840",
@@ -2757,9 +2753,7 @@
                     "dist_head": "0.000",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -3079,9 +3073,7 @@
                     "dist_head": "4.670",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -3457,17 +3449,17 @@
             "unique_ref": "130186",
             "wbid": "GB109053022230",
             "length": "6.725",
-            "connectivity": [
-                "0",
-                "4",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "0",
+                "conn2": "4",
+                "conn3": "0"
+            },
             "flow_data": "3",
             "wq_data": "3",
-            "velocity": [
-                "7.480",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "7.480",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "3.0000",
@@ -3742,9 +3734,7 @@
                     "dist_head": "0.000",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -4064,9 +4054,7 @@
                     "dist_head": "6.725",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -4400,17 +4388,17 @@
             "unique_ref": "130307",
             "wbid": "GB109053022240",
             "length": "6.417",
-            "connectivity": [
-                "3",
-                "4",
-                "5"
-            ],
+            "connectivity": {
+                "conn1": "3",
+                "conn2": "4",
+                "conn3": "5"
+            },
             "flow_data": "4",
             "wq_data": "4",
-            "velocity": [
-                "8.746",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "8.746",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "3.0000",
@@ -4685,9 +4673,7 @@
                     "dist_head": "0.000",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -5007,9 +4993,7 @@
                     "dist_head": "6.417",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -5616,17 +5600,17 @@
             "unique_ref": "130308",
             "wbid": "GB109053022240",
             "length": "0.195",
-            "connectivity": [
-                "0",
-                "6",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "0",
+                "conn2": "6",
+                "conn3": "0"
+            },
             "flow_data": "5",
             "wq_data": "5",
-            "velocity": [
-                "13.187",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "13.187",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "2.9960",
@@ -5846,9 +5830,7 @@
                     "dist_head": "0.195",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -6035,17 +6017,17 @@
             "unique_ref": "130309",
             "wbid": "GB109053022250",
             "length": "7.504",
-            "connectivity": [
-                "0",
-                "7",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "0",
+                "conn2": "7",
+                "conn3": "0"
+            },
             "flow_data": "6",
             "wq_data": "6",
-            "velocity": [
-                "8.484",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "8.484",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "3.0000",
@@ -6320,9 +6302,7 @@
                     "dist_head": "0.000",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -6642,9 +6622,7 @@
                     "dist_head": "7.504",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -7256,17 +7234,17 @@
             "unique_ref": "130187",
             "wbid": "GB109053022251",
             "length": "7.766",
-            "connectivity": [
-                "6",
-                "7",
-                "8"
-            ],
+            "connectivity": {
+                "conn1": "6",
+                "conn2": "7",
+                "conn3": "8"
+            },
             "flow_data": "7",
             "wq_data": "7",
-            "velocity": [
-                "6.931",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "6.931",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "3.0000",
@@ -7541,9 +7519,7 @@
                     "dist_head": "0.000",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -7863,9 +7839,7 @@
                     "dist_head": "7.766",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -8470,17 +8444,17 @@
             "unique_ref": "130310",
             "wbid": "GB109053022250",
             "length": "1.507",
-            "connectivity": [
-                "5",
-                "8",
-                "9"
-            ],
+            "connectivity": {
+                "conn1": "5",
+                "conn2": "8",
+                "conn3": "9"
+            },
             "flow_data": "8",
             "wq_data": "8",
-            "velocity": [
-                "11.917",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "11.917",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "2.9960",
@@ -8700,9 +8674,7 @@
                     "dist_head": "1.507",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -9013,17 +8985,17 @@
             "unique_ref": "130311",
             "wbid": "GB109053022271",
             "length": "9.558",
-            "connectivity": [
-                "2",
-                "9",
-                "10"
-            ],
+            "connectivity": {
+                "conn1": "2",
+                "conn2": "9",
+                "conn3": "10"
+            },
             "flow_data": "9",
             "wq_data": "9",
-            "velocity": [
-                "13.578",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "13.578",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "2.9960",
@@ -9243,9 +9215,7 @@
                     "dist_head": "9.558",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -9305,9 +9275,7 @@
                     "dist_head": "9.558",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'HighwayFlow9.npd'",
                         "corr": "0.95"
                     },
                     "wq_data": {
@@ -10430,17 +10398,17 @@
             "unique_ref": "130312",
             "wbid": "GB109053022271",
             "length": "4.299",
-            "connectivity": [
-                "1",
-                "10",
-                "11"
-            ],
+            "connectivity": {
+                "conn1": "1",
+                "conn2": "10",
+                "conn3": "11"
+            },
             "flow_data": "10",
             "wq_data": "10",
-            "velocity": [
-                "19.121",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "19.121",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "2.6790",
@@ -10660,9 +10628,7 @@
                     "dist_head": "4.299",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -10722,9 +10688,7 @@
                     "dist_head": "4.299",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'HighwayFlow10.npd'",
                         "corr": "0.95"
                     },
                     "wq_data": {
@@ -10932,17 +10896,17 @@
             "unique_ref": "130313",
             "wbid": "GB109053022271",
             "length": "1.976",
-            "connectivity": [
-                "12",
-                "0",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "12",
+                "conn2": "0",
+                "conn3": "0"
+            },
             "flow_data": "11",
             "wq_data": "11",
-            "velocity": [
-                "26.335",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "26.335",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.0200",
                 "2.6790",
@@ -11162,9 +11126,7 @@
                     "dist_head": "1.976",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -11224,9 +11186,7 @@
                     "dist_head": "1.976",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'HighwayFlow11.npd'",
                         "corr": "0.95"
                     },
                     "wq_data": {
@@ -11600,17 +11560,17 @@
             "unique_ref": "130189",
             "wbid": "GB109053022271",
             "length": "0.296",
-            "connectivity": [
-                "0",
-                "13",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "0",
+                "conn2": "13",
+                "conn3": "0"
+            },
             "flow_data": "12",
             "wq_data": "12",
-            "velocity": [
-                "21.406",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "21.406",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.2000",
                 "1.0000",
@@ -11836,9 +11796,7 @@
                     "dist_head": "0.296",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -11898,9 +11856,7 @@
                     "dist_head": "0.296",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'HighwayFlow12.npd'",
                         "corr": "0.95"
                     },
                     "wq_data": {
@@ -12192,17 +12148,17 @@
             "unique_ref": "130190",
             "wbid": "GB109053022271",
             "length": "0.296",
-            "connectivity": [
-                "12",
-                "13",
-                "14"
-            ],
+            "connectivity": {
+                "conn1": "12",
+                "conn2": "13",
+                "conn3": "14"
+            },
             "flow_data": "13",
             "wq_data": "13",
-            "velocity": [
-                "21.413",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "21.413",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.2000",
                 "1.0000",
@@ -12428,9 +12384,7 @@
                     "dist_head": "0.296",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -12490,9 +12444,7 @@
                     "dist_head": "0.296",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'HighwayFlow13.npd'",
                         "corr": "0.95"
                     },
                     "wq_data": {
@@ -12616,17 +12568,17 @@
             "unique_ref": "130191",
             "wbid": "GB109053022271",
             "length": "1.297",
-            "connectivity": [
-                "0",
-                "0",
-                "0"
-            ],
+            "connectivity": {
+                "conn1": "0",
+                "conn2": "0",
+                "conn3": "0"
+            },
             "flow_data": "14",
             "wq_data": "14",
-            "velocity": [
-                "24.686",
-                "0.500"
-            ],
+            "velocity": {
+                "alpha": "24.686",
+                "beta": "0.500"
+            },
             "decay_rates": [
                 "0.2000",
                 "1.0000",
@@ -12846,9 +12798,7 @@
                     "dist_head": "1.297",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'IntFlow56_8.npd'",
                         "corr": "0.00"
                     },
                     "wq_data": {
@@ -12908,9 +12858,7 @@
                     "dist_head": "1.297",
                     "flow_data": {
                         "dist": "4",
-                        "mean_flow": "0.8030",
-                        "low_95th_flow": "43.77",
-                        "shift_flow": "0.00",
+                        "npd_filename": "'HighwayFlow14.npd'",
                         "corr": "0.95"
                     },
                     "wq_data": {

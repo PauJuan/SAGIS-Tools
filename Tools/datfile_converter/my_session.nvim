@@ -10,7 +10,7 @@ endif
 set shortmess=aoO
 argglobal
 %argdel
-$argadd .
+$argadd ./
 tabnew
 tabnew
 tabnew
@@ -27,7 +27,7 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 5 - ((4 * winheight(0) + 28) / 56)
+let s:l = 5 - ((4 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
@@ -36,6 +36,7 @@ normal! 03|
 tabnext
 edit EXAMPLE.dat
 argglobal
+balt EXAMPLE.dat
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -46,12 +47,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 3302 - ((25 * winheight(0) + 28) / 56)
+let s:l = 2300 - ((4 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 3302
-normal! 022|
+keepjumps 2300
+normal! 021|
 tabnext
 edit EXAMPLE.json
 argglobal
@@ -66,12 +67,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 12626 - ((27 * winheight(0) + 28) / 56)
+let s:l = 6625 - ((19 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 12626
-normal! 014|
+keepjumps 6625
+normal! 055|
 tabnext
 edit EXAMPLE.yaml
 argglobal
@@ -86,19 +87,19 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 2224 - ((27 * winheight(0) + 28) / 56)
+let s:l = 3579 - ((19 * winheight(0) + 19) / 39)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 2224
+keepjumps 3579
 normal! 05|
 tabnext 1
-badd +221 dat_to_json.py
-badd +1 ~/Dev/SAGIS-Tools/Tools/datfile_converter
+badd +1 ./
 badd +1373 EXAMPLE.dat
 badd +13047 EXAMPLE.json
-badd +0 EXAMPLE_v2.json
-badd +0 EXAMPLE.yaml
+badd +1 EXAMPLE.yaml
+badd +0 dat_to_json.py
+badd +1 EXAMPLE_v2.json
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif
