@@ -10,31 +10,12 @@ endif
 set shortmess=aoO
 argglobal
 %argdel
-$argadd ./
+$argadd ~/Dev/SAGIS-Tools/Tools/datfile_converter
 tabnew
 tabnew
 tabnew
 tabrewind
 edit dat_to_json.py
-argglobal
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=0
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-silent! normal! zE
-let &fdl = &fdl
-let s:l = 5 - ((4 * winheight(0) + 19) / 39)
-if s:l < 1 | let s:l = 1 | endif
-keepjumps exe s:l
-normal! zt
-keepjumps 5
-normal! 03|
-tabnext
-edit EXAMPLE.dat
 argglobal
 balt EXAMPLE.dat
 setlocal fdm=manual
@@ -47,12 +28,32 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 2300 - ((4 * winheight(0) + 19) / 39)
+let s:l = 7 - ((6 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 2300
-normal! 021|
+keepjumps 7
+normal! 03|
+tabnext
+edit EXAMPLE.dat
+argglobal
+balt dat_to_json.py
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=0
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let &fdl = &fdl
+let s:l = 201 - ((6 * winheight(0) + 16) / 33)
+if s:l < 1 | let s:l = 1 | endif
+keepjumps exe s:l
+normal! zt
+keepjumps 201
+normal! 0
 tabnext
 edit EXAMPLE.json
 argglobal
@@ -67,12 +68,12 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 6625 - ((19 * winheight(0) + 19) / 39)
+let s:l = 227 - ((25 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 6625
-normal! 055|
+keepjumps 227
+normal! 0
 tabnext
 edit EXAMPLE.yaml
 argglobal
@@ -87,19 +88,20 @@ setlocal fdn=20
 setlocal fen
 silent! normal! zE
 let &fdl = &fdl
-let s:l = 3579 - ((19 * winheight(0) + 19) / 39)
+let s:l = 3491 - ((25 * winheight(0) + 16) / 33)
 if s:l < 1 | let s:l = 1 | endif
 keepjumps exe s:l
 normal! zt
-keepjumps 3579
-normal! 05|
+keepjumps 3491
+normal! 0
 tabnext 1
-badd +1 ./
-badd +1373 EXAMPLE.dat
-badd +13047 EXAMPLE.json
-badd +1 EXAMPLE.yaml
-badd +0 dat_to_json.py
+badd +1 ~/Dev/SAGIS-Tools/Tools/datfile_converter
+badd +1 EXAMPLE.dat
+badd +6625 EXAMPLE.json
+badd +3579 EXAMPLE.yaml
+badd +12 dat_to_json.py
 badd +1 EXAMPLE_v2.json
+badd +27 datfile.py
 if exists('s:wipebuf') && len(win_findbuf(s:wipebuf)) == 0 && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf
 endif

@@ -23,8 +23,9 @@ DatFile = {
             "Created by": "",
             "DAT File Creation Date": "",
             },
+        "determinands": {
+            },
         "reaches": {
-            # "reach_id": Reach
             }
         }
 

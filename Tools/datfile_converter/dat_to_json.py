@@ -2,11 +2,9 @@
 Python version of SIMCAT
 """
 
-# TODO Many of the values should be numerical but are being appended as text
-# TODO Need to strip quotes from string values
-# TODO Add functionality to handle gis coordinates as lat/long
-# TODO Add determinands section in metadata
-# TODO General review of how the values are stored
+# TODO Handle GIS coordinates as lat/long
+# TODO Clearer connectivity rules with func to evaluate values
+# TODO Check all data is being read properly
 
 import re
 import json
@@ -150,6 +148,9 @@ def process_determinand_section(lines, dat_file):
                 }
         count += 1
 
+    # Append to DatFile
+    dat_file["determinands"] = det_units_dict
+
     # Return dictionary to use data later
     return det_units_dict
 
@@ -163,27 +164,34 @@ def process_reaches_section(lines, dat_file):
     # Use count to separate reach data from decay, standards, etc
     count = 0
     for line in lines:
-        # TODO Need to implement logic to read in Standards
+
+        # Read in Standards
         if line.startswith("'Standard'"):
-            continue
+            standards = re.split(r"\s{2,}", line)
+            reach["standards"][standards[1]] = [float(v) for v in
+                    standards[2:]]
+
         elif count == 1:
-            decay_rates = re.split(r"\s{2,}", line)
+            # Read in decay rates
+            decay_rates = [float(v) for v in re.split(r"\s{2,}", line)]
             reach["decay_rates"] = decay_rates
             # Add features at the end
+            reach["standards"] = {}
             reach["features"] = {}
             count = 0
+
         elif count == 0:
-            # Retrieve data
+            # Retrieve reach data
             simno, name, length, conn1, conn2, conn3 , flow_code, wq_code, alpha, \
             beta, wbid, unique_ref = re.split(r"\s{2,}", line)
             # Create reach
             dat_file["reaches"][simno] = {}
             reach = DatFile["reaches"][simno]
             # Populate
-            reach["name"] = name.strip("''")
+            reach["name"] = name.strip("''").replace("'", "")
             reach["unique_ref"] = unique_ref.strip()
-            reach["wbid"] = wbid.strip("'")
-            reach["length"] = length
+            reach["wbid"] = wbid.strip("'").replace("'", "")
+            reach["length"] = float(length)
             reach["connectivity"] = {
                     "conn1": conn1,
                     "conn2": conn2,
@@ -192,8 +200,8 @@ def process_reaches_section(lines, dat_file):
             reach["flow_data"] = flow_code
             reach["wq_data"] = wq_code
             reach["velocity"] = {
-                    "alpha": alpha,
-                    "beta": beta
+                    "alpha": float(alpha),
+                    "beta": float(beta)
                     }
             # Increase count
             count += 1
@@ -210,18 +218,18 @@ def process_river_flow_section(lines, dat_file):
         if ".npd" in line:
             code, dist, npd_filename, corr, _ = re.split(r"\s{2,}", line)
             flow_data[code] = {
-                    "dist": dist,
-                    "npd_filename": npd_filename,
-                    "corr": corr
+                    "dist": float(dist),
+                    "npd_filename": npd_filename.replace("'", ""),
+                    "corr": float(corr)
                     }
         else:
             code, dist, mean_flow, low_95th_flow, shift_flow, corr, _ = re.split(r"\s{2,}", line)
             flow_data[code] = {
-                    "dist": dist,
-                    "mean_flow": mean_flow,
-                    "low_95th_flow": low_95th_flow,
-                    "shift_flow": shift_flow,
-                    "corr": corr
+                    "dist": float(dist),
+                    "mean_flow": float(mean_flow),
+                    "low_95th_flow": float(low_95th_flow),
+                    "shift_flow": float(shift_flow),
+                    "corr": float(corr)
                     }
 
     # Return dictionary to use data later
@@ -251,14 +259,14 @@ def process_river_quality_section(lines, dat_file, det_units_dict):
 
             wq_data_det = wq_data[code]
             wq_data_det[det_name] = {
-                    "dist": dist,
-                    "mean_conc": mean_conc,
-                    "std": std,
-                    "power_idx": power_idx,
-                    "base_conc": base_conc,
-                    "cut_off_pc": cut_off_pc,
-                    "corr": corr,
-                    "sample_n": sample_n
+                    "dist": float(dist),
+                    "mean_conc": float(mean_conc),
+                    "std": float(std),
+                    "power_idx": float(power_idx),
+                    "base_conc": float(base_conc),
+                    "cut_off_pc": float(cut_off_pc),
+                    "corr": float(corr),
+                    "sample_n": float(sample_n)
                     }
 
         else:
@@ -266,12 +274,12 @@ def process_river_quality_section(lines, dat_file, det_units_dict):
 
             wq_data_det = wq_data[code]
             wq_data_det[det_name] = {
-                    "dist": dist,
-                    "mean_conc": mean_conc,
-                    "std": std,
-                    "shift_conc": shift_conc,
-                    "corr": corr,
-                    "sample_n": sample_n
+                    "dist": float(dist),
+                    "mean_conc": float(mean_conc),
+                    "std": float(std),
+                    "shift_conc": float(shift_conc),
+                    "corr": float(corr),
+                    "sample_n": float(sample_n)
                     }
 
     # Return dictionary to use data later
@@ -304,11 +312,11 @@ def process_effluent_section(lines, dat_file, det_units_dict):
 
             eff_data_det = eff_data[code]
             eff_data_det[det_name] = {
-                    "dist": dist,
-                    "npd_filename": npd_filename,
-                    "shift": shift_conc,
-                    "corr": corr,
-                    "sample_n": sample_n
+                    "dist": float(dist),
+                    "npd_filename": float(npd_filename),
+                    "shift": float(shift_conc),
+                    "corr": float(corr),
+                    "sample_n": float(sample_n)
                     }
 
         else:
@@ -316,12 +324,12 @@ def process_effluent_section(lines, dat_file, det_units_dict):
 
             eff_data_det = eff_data[code]
             eff_data_det[det_name] = {
-                    "dist": dist,
-                    "mean_conc": mean_conc,
-                    "std": std,
-                    "shift_conc": shift_conc,
-                    "corr": corr,
-                    "sample_n": sample_n
+                    "dist": float(dist),
+                    "mean_conc": float(mean_conc),
+                    "std": float(std),
+                    "shift_conc": float(shift_conc),
+                    "corr": float(corr),
+                    "sample_n": float(sample_n)
                     }
 
     # Return dictionary to use data later
@@ -335,8 +343,7 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
     """
     for line in lines:
         if "WBID:" in line:
-            pass
-            # TODO Populate reach flow and wq data
+            continue
 
         else:
             parts = re.split(r"\s{2,}", line)
@@ -345,44 +352,55 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
                 parts = [parts[0] + " " + parts[1]] + parts[2:]
 
             name, code, simno, dist_head, flow_code, wq_code, _, _, _, giscode = parts
+            name = name.replace("'", "")
             reach = dat_file["reaches"][simno]
 
-            # TODO Need to add logic to handle data based on feature type
+            # Effluent features
+            if code in ["3", "5", "12"]:
 
-            # Retrieve feature flow and quality data
-            try:
-                feature_flow_data = flow_data[flow_code]
-            except KeyError:
-                feature_flow_data = None
+                # Retrieve feature flow and quality data
+                try:
+                    effluent_data = eff_data[wq_code].copy()
+                except KeyError:
+                    effluent_data = None
 
-            try:
-                feature_wq_data = wq_data[wq_code]
-            except KeyError:
-                feature_wq_data = None
+                reach["features"][name] = {
+                        "feat_code": code,
+                        "dist_head": float(dist_head),
+                        "eff_data": effluent_data,
+                        "giscode": giscode.replace("'", ""),
+                        }
 
-            try:
-                effluent_data = eff_data[wq_code]
-            except KeyError:
-                effluent_data = None
+            # Other features
+            else:
 
-            reach["features"][name] = {
-                    "feat_code": code,
-                    "dist_head": dist_head,
-                    "flow_data": feature_flow_data,
-                    "wq_data": feature_wq_data,
-                    "giscode": giscode,
-                    }
+                try:
+                    feature_flow_data = flow_data[flow_code].copy()
+                except KeyError:
+                    feature_flow_data = None
+
+                try:
+                    feature_wq_data = wq_data[wq_code].copy()
+                except KeyError:
+                    feature_wq_data = None
+
+                reach["features"][name] = {
+                        "feat_code": code,
+                        "dist_head": float(dist_head),
+                        "flow_data": feature_flow_data,
+                        "wq_data": feature_wq_data,
+                        "giscode": giscode.replace("'", ""),
+                        }
 
 # Process dat file
 process_dat_file_lines(file_path, config, DatFile)
 
-# Export as json and yaml
+# Export as json
 jsonfile = "EXAMPLE.json"
-yamlfile = "EXAMPLE.yaml"
-
 with open(jsonfile, "w") as outfile:
     json.dump(DatFile, outfile, indent=4, sort_keys=False)
-# with open(jsonfile) as outfile:
-#     d = json.load(outfile)
+
+# Export as yaml
+yamlfile = "EXAMPLE.yaml"
 with open(yamlfile, "w") as outfile:
-    yaml.dump(DatFile, outfile, allow_unicode=True)
+    yaml.safe_dump(DatFile, outfile, default_flow_style=False, sort_keys=False)
