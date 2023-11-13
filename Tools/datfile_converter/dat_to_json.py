@@ -2,14 +2,13 @@
 Python version of SIMCAT
 """
 
-# TODO Handle GIS coordinates as lat/long
 # TODO Clearer connectivity rules with func to evaluate values
 # TODO Check all data is being read properly
 
 import re
 import json
 import yaml
-from datfile import DatFile, config  # Main dict to contain data and config file
+from datfile import DatFile, config, get_coordinates
 
 file_path = "EXAMPLE.dat"
 
@@ -64,7 +63,7 @@ def process_dat_file_lines(file_path, config, dat_file):
                 section_end = "end_reaches"
                 if section_start and section_end:
                     process_reaches_section(
-                            section_lines, dat_file)
+                            section_lines, dat_file, det_units_dict)
                     section_start = section_end = None
 
             # River flow
@@ -155,7 +154,7 @@ def process_determinand_section(lines, dat_file):
     return det_units_dict
 
 
-def process_reaches_section(lines, dat_file):
+def process_reaches_section(lines, dat_file, det_units_dict):
     """
     Parse reaches
     [3] Reaches - order (simno), id, name, waterbody, length, connectivity,
@@ -168,12 +167,16 @@ def process_reaches_section(lines, dat_file):
         # Read in Standards
         if line.startswith("'Standard'"):
             standards = re.split(r"\s{2,}", line)
-            reach["standards"][standards[1]] = [float(v) for v in
-                    standards[2:]]
+            det = det_units_dict[standards[1]]["short_name"]
+            reach["standards"][det] = {
+                    "count": int(standards[2]),
+                    "thresholds": [float(v) for v in standards[3:]]
+                    }
 
         elif count == 1:
             # Read in decay rates
-            decay_rates = [float(v) for v in re.split(r"\s{2,}", line)]
+            decay_rates = {det_units_dict[str(n+1)]["short_name"]: float(v)
+                           for n, v in enumerate(re.split(r"\s{2,}", line))}
             reach["decay_rates"] = decay_rates
             # Add features at the end
             reach["standards"] = {}
@@ -341,6 +344,8 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
     Parse features and assing flow and quality data
     [9] Features - id, name, feat type, distance (km), coordinates (BNG)
     """
+    count = 1
+
     for line in lines:
         if "WBID:" in line:
             continue
@@ -354,6 +359,7 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
             name, code, simno, dist_head, flow_code, wq_code, _, _, _, giscode = parts
             name = name.replace("'", "")
             reach = dat_file["reaches"][simno]
+            long, lat = get_coordinates(giscode.replace("'", ""))
 
             # Effluent features
             if code in ["3", "5", "12"]:
@@ -364,11 +370,15 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
                 except KeyError:
                     effluent_data = None
 
-                reach["features"][name] = {
+                reach["features"][count] = {
+                        "name": name,
                         "feat_code": code,
                         "dist_head": float(dist_head),
+                        "giscode": {
+                            "long": long,
+                            "lat": lat
+                            },
                         "eff_data": effluent_data,
-                        "giscode": giscode.replace("'", ""),
                         }
 
             # Other features
@@ -384,13 +394,20 @@ def process_features_section(lines, dat_file, flow_data, wq_data, eff_data):
                 except KeyError:
                     feature_wq_data = None
 
-                reach["features"][name] = {
+                reach["features"][count] = {
+                        "name": name,
                         "feat_code": code,
                         "dist_head": float(dist_head),
+                        "giscode": {
+                            "long": long,
+                            "lat": lat
+                            },
                         "flow_data": feature_flow_data,
                         "wq_data": feature_wq_data,
-                        "giscode": giscode.replace("'", ""),
                         }
+
+            # Increase feature count
+            count += 1
 
 # Process dat file
 process_dat_file_lines(file_path, config, DatFile)
@@ -400,7 +417,11 @@ jsonfile = "EXAMPLE.json"
 with open(jsonfile, "w") as outfile:
     json.dump(DatFile, outfile, indent=4, sort_keys=False)
 
-# Export as yaml
+# Read json and re-export as yaml. This is preferable to exporting directly as
+# yaml to avoid references in the output file
+with open(jsonfile) as f:
+    data = json.load(f)
+
 yamlfile = "EXAMPLE.yaml"
 with open(yamlfile, "w") as outfile:
-    yaml.safe_dump(DatFile, outfile, default_flow_style=False, sort_keys=False)
+    yaml.safe_dump(data, outfile, default_flow_style=False, sort_keys=False)

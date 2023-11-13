@@ -74,3 +74,22 @@ config = {
             "end": "***************** indicator of end of data *********"
             }
         }
+
+
+def get_coordinates(giscode):
+    """
+    A function to separate the coordinate field from SIMCAT outputs into Easting
+    and Northing. It only works with coordinates within the UK
+    """
+    if len(giscode) < 12:
+        if int(giscode[0]) < 5:
+            x_coor = giscode[:6]
+            y_coor = giscode[6:]
+        else:
+            x_coor = giscode[:5]
+            y_coor = giscode[5:]
+    else:
+        x_coor = giscode[:6]
+        y_coor = giscode[6:]
+
+    return int(x_coor), int(y_coor)
