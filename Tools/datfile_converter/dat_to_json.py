@@ -2,9 +2,6 @@
 Python version of SIMCAT
 """
 
-# TODO Clearer connectivity rules with func to evaluate values
-# TODO Check all data is being read properly
-
 import re
 import json
 import yaml
