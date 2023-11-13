@@ -9,6 +9,8 @@ from datfile import DatFile, config, get_coordinates
 
 file_path = "EXAMPLE.dat"
 
+# TODO Check all data is being read, specially flow and wq data for reaches (ask Peter)
+
 
 def process_dat_file_lines(file_path, config, dat_file):
     """
